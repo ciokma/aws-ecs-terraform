@@ -22,7 +22,12 @@ public_subnet_cidrs = [
 # ECR
 # =========================================================
 
-ecr_max_image_count = 5
+ecr_frontend_repository_name = "gimnasio-web-frontend"
+ecr_backend_repository_name  = "gimnasio-web-api"
+
+ecr_image_tag_mutability = "MUTABLE"
+ecr_scan_on_push         = true
+ecr_max_image_count      = 5
 
 # =========================================================
 # ECS
@@ -41,3 +46,4 @@ desired_count = 1
 react_app_api_url   = "http://localhost:5211/api"
 react_app_target    = "FRONTEND"
 react_app_image_url = "http://localhost:5211/images"
+

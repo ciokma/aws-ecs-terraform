@@ -52,3 +52,10 @@ output "ecs_task_role_arn" {
   description = "ECS task role ARN."
   value       = module.iam.ecs_task_role_arn
 }
+output "ecr_frontend_repository_url" {
+  value = module.ecr_frontend.repository_url
+}
+
+output "ecr_backend_repository_url" {
+  value = module.ecr_backend.repository_url
+}

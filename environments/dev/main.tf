@@ -29,15 +29,39 @@ module "vpc" {
 # ECR
 # =========================================================
 
-module "ecr" {
+
+module "ecr_frontend" {
   source = "../../modules/ecr"
 
-  repository_name = "${local.name}-app"
+  repository_name      = var.ecr_frontend_repository_name
+  image_tag_mutability = var.ecr_image_tag_mutability
+  scan_on_push         = var.ecr_scan_on_push
+  max_image_count      = var.ecr_max_image_count
 
-  scan_on_push    = true
-  max_image_count = var.ecr_max_image_count
+  tags = merge(
+    local.tags,
+    {
+      Application = "gimnasio-web-frontend"
+      Component   = "frontend"
+    }
+  )
+}
 
-  tags = local.tags
+module "ecr_backend" {
+  source = "../../modules/ecr"
+
+  repository_name      = var.ecr_backend_repository_name
+  image_tag_mutability = var.ecr_image_tag_mutability
+  scan_on_push         = var.ecr_scan_on_push
+  max_image_count      = var.ecr_max_image_count
+
+  tags = merge(
+    local.tags,
+    {
+      Application = "gimnasio-web-api"
+      Component   = "backend"
+    }
+  )
 }
 
 # =========================================================

@@ -98,3 +98,30 @@ variable "react_app_image_url" {
   type        = string
   description = "Backend image URL for React images"
 }
+variable "ecr_frontend_repository_name" {
+  description = "ECR repository name for the frontend"
+  type        = string
+}
+
+variable "ecr_backend_repository_name" {
+  description = "ECR repository name for the backend API"
+  type        = string
+}
+
+variable "ecr_image_tag_mutability" {
+  description = "ECR image tag mutability"
+  type        = string
+  default     = "MUTABLE"
+}
+
+variable "ecr_scan_on_push" {
+  description = "Enable ECR image scanning on push"
+  type        = bool
+  default     = true
+}
+
+variable "ecr_max_image_count" {
+  description = "Maximum number of images retained in ECR"
+  type        = number
+  default     = 10
+}
