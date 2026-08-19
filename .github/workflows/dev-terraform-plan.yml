@@ -1,17 +1,21 @@
-name: Terraform Apply
+name: Dev - Terraform Plan
 
 on:
-  workflow_dispatch:
-    inputs:
-      plan_run_id:
-        description: 'Run ID of the Terraform Plan workflow'
-        required: true
-        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - 'environments/dev/**'
+      - '.github/workflows/terraform-plan.yml'
+
+  pull_request:
+    paths:
+      - 'environments/dev/**'
+      - '.github/workflows/terraform-plan.yml'
 
 permissions:
   contents: read
   id-token: write
-  actions: read
 
 env:
   AWS_REGION: us-east-1
@@ -19,8 +23,8 @@ env:
   TF_ROOT: environments/dev
 
 jobs:
-  terraform-apply:
-    name: Terraform Apply
+  terraform-plan:
+    name: Terraform Validate & Plan
     runs-on: ubuntu-latest
 
     environment: dev
@@ -48,24 +52,27 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Terraform Format Check
+        run: |
+          terraform fmt -check -recursive
+
       - name: Terraform Init
         run: |
           terraform init -input=false
 
-      - name: Download Terraform Plan
-        uses: actions/download-artifact@v5
-        with:
-          name: terraform-plan-${{ inputs.plan_run_id }}
-          path: ${{ env.TF_ROOT }}
-          run-id: ${{ inputs.plan_run_id }}
-          github-token: ${{ github.token }}
-
-      - name: Verify Terraform Plan
+      - name: Terraform Validate
         run: |
-          ls -lh terraform.tfplan
+          terraform validate
 
-      - name: Terraform Apply
+      - name: Terraform Plan
         run: |
-          terraform apply \
+          terraform plan \
             -input=false \
-            terraform.tfplan
+            -out=terraform.tfplan
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ github.run_id }}
+          path: ${{ env.TF_ROOT }}/terraform.tfplan
+          retention-days: 7
