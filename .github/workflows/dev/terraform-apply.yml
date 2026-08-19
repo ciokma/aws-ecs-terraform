@@ -1,0 +1,71 @@
+name: Terraform Apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      plan_run_id:
+        description: 'Run ID of the Terraform Plan workflow'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+  actions: read
+
+env:
+  AWS_REGION: us-east-1
+  TF_IN_AUTOMATION: true
+  TF_ROOT: environments/dev
+
+jobs:
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+
+    environment: dev
+
+    defaults:
+      run:
+        working-directory: ${{ env.TF_ROOT }}
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.2.3
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify AWS Identity
+        working-directory: .
+        run: |
+          aws sts get-caller-identity
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: |
+          terraform init -input=false
+
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v5
+        with:
+          name: terraform-plan-${{ inputs.plan_run_id }}
+          path: ${{ env.TF_ROOT }}
+          run-id: ${{ inputs.plan_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify Terraform Plan
+        run: |
+          ls -lh terraform.tfplan
+
+      - name: Terraform Apply
+        run: |
+          terraform apply \
+            -input=false \
+            terraform.tfplan
