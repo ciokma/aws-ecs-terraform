@@ -29,7 +29,7 @@ ecr_max_image_count = 5
 # =========================================================
 
 container_name  = "gimnasio-api"
-container_image = "public.ecr.aws/docker/library/nginx:latest"
+container_image = "784590287404.dkr.ecr.us-east-1.amazonaws.com/gimnasio-api-app:latest"
 
 container_port = 80
 
@@ -37,3 +37,7 @@ ecs_cpu    = 256
 ecs_memory = 512
 
 desired_count = 1
+
+react_app_api_url   = "http://localhost:5211/api"
+react_app_target    = "FRONTEND"
+react_app_image_url = "http://localhost:5211/images"

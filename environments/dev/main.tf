@@ -79,5 +79,10 @@ module "ecs" {
 
   aws_region = var.aws_region
 
+  # React runtime environment variables
+  react_app_api_url   = var.react_app_api_url
+  react_app_target    = var.react_app_target
+  react_app_image_url = var.react_app_image_url
+  
   tags = local.tags
 }

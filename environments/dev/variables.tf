@@ -84,3 +84,17 @@ variable "desired_count" {
   description = "Number of ECS tasks."
   type        = number
 }
+variable "react_app_api_url" {
+  type        = string
+  description = "Backend API URL for the React application"
+}
+
+variable "react_app_target" {
+  type        = string
+  description = "React application target"
+}
+
+variable "react_app_image_url" {
+  type        = string
+  description = "Backend image URL for React images"
+}
