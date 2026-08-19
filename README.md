@@ -301,4 +301,4 @@ Update ECS Task Definition
 ECS Fargate Service
 ```
 
-Terraform is responsible for provisioning the infrastructure, while GitHub Actions will later be responsible for building and deploying new application images.
+"Terraform" is responsible for provisioning the infrastructure, while GitHub Actions will later be responsible for building and deploying new application images.
