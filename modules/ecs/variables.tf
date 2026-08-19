@@ -81,3 +81,17 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+variable "react_app_api_url" {
+  description = "Backend API URL used by the React application"
+  type        = string
+}
+
+variable "react_app_target" {
+  description = "Frontend application target"
+  type        = string
+}
+
+variable "react_app_image_url" {
+  description = "Backend image URL used by the React application"
+  type        = string
+}

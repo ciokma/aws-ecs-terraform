@@ -61,7 +61,6 @@ resource "aws_security_group" "ecs" {
 # =========================================================
 # ECS Task Definition
 # =========================================================
-
 resource "aws_ecs_task_definition" "this" {
   family                   = "${var.name}-task"
   network_mode             = "awsvpc"
@@ -84,6 +83,21 @@ resource "aws_ecs_task_definition" "this" {
           containerPort = var.container_port
           hostPort      = var.container_port
           protocol      = "tcp"
+        }
+      ]
+
+      environment = [
+        {
+          name  = "REACT_APP_API_URL"
+          value = var.react_app_api_url
+        },
+        {
+          name  = "REACT_APP_TARGET"
+          value = var.react_app_target
+        },
+        {
+          name  = "REACT_APP_IMAGE_URL"
+          value = var.react_app_image_url
         }
       ]
 
