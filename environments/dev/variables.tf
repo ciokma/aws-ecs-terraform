@@ -79,25 +79,20 @@ variable "ecs_memory" {
   description = "ECS Fargate memory in MB."
   type        = number
 }
+variable "ecs_cpu_backend" {
+  description = "ECS Fargate CPU units for the backend."
+  type        = number
+}
 
+variable "ecs_memory_backend" {
+  description = "ECS Fargate memory in MB for the backend."
+  type        = number
+}
 variable "desired_count" {
   description = "Number of ECS tasks."
   type        = number
 }
-variable "react_app_api_url" {
-  type        = string
-  description = "Backend API URL for the React application"
-}
 
-variable "react_app_target" {
-  type        = string
-  description = "React application target"
-}
-
-variable "react_app_image_url" {
-  type        = string
-  description = "Backend image URL for React images"
-}
 variable "ecr_frontend_repository_name" {
   description = "ECR repository name for the frontend"
   type        = string
@@ -120,8 +115,84 @@ variable "ecr_scan_on_push" {
   default     = true
 }
 
-variable "ecr_max_image_count" {
-  description = "Maximum number of images retained in ECR"
+variable "environment_vars_frontend" {
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+variable "environment_vars_backend" {
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+
+variable "secrets" {
+  type = list(object({
+    name      = string
+    valueFrom = string
+  }))
+  default = []
+}
+
+variable "db_name" {
+  type = string
+}
+
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "db_instance_class" {
+  type    = string
+  default = "db.t3.micro"
+}
+
+
+variable "backup_retention_period" {
+  description = "Backup retention in days"
   type        = number
-  default     = 10
+  default     = 7
+}
+
+variable "backup_window" {
+  description = "Preferred backup window"
+  type        = string
+  default     = "03:00-04:00"
+}
+
+variable "maintenance_window" {
+  description = "Preferred maintenance window"
+  type        = string
+  default     = "sun:04:00-sun:05:00"
+}
+
+variable "deletion_protection" {
+  description = "Enable deletion protection"
+  type        = bool
+  default     = false
+}
+
+variable "skip_final_snapshot" {
+  description = "Skip final snapshot when destroying"
+  type        = bool
+  default     = true
+}
+variable "publicly_accessible" {
+  description = "Whether the RDS instance is publicly accessible"
+  type        = bool
+  default     = false
+}
+variable multi_az {
+  description = "Enable Multi-AZ deployment for RDS"
+  type        = bool
+  default     = false
 }

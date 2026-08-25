@@ -8,16 +8,6 @@ output "public_subnet_ids" {
   value       = module.vpc.public_subnet_ids
 }
 
-output "ecr_repository_name" {
-  description = "ECR repository name."
-  value       = module.ecr.repository_name
-}
-
-output "ecr_repository_url" {
-  description = "ECR repository URL."
-  value       = module.ecr.repository_url
-}
-
 output "ecs_cluster_name" {
   description = "ECS cluster name."
   value       = module.ecs.cluster_name
@@ -28,20 +18,15 @@ output "ecs_cluster_arn" {
   value       = module.ecs.cluster_arn
 }
 
-output "ecs_service_name" {
-  description = "ECS service name."
-  value       = module.ecs.service_name
+output "ecs_frontend_service_name" {
+  description = "ECS Frontend service name."
+  value       = module.frontend_ecs.service_name
+}
+output "ecs_backend_service_name" {
+  description = "ECS Backend service name."
+  value       = module.backend_ecs.service_name
 }
 
-output "ecs_task_definition_arn" {
-  description = "ECS task definition ARN."
-  value       = module.ecs.task_definition_arn
-}
-
-output "ecs_security_group_id" {
-  description = "ECS security group ID."
-  value       = module.ecs.security_group_id
-}
 
 output "ecs_execution_role_arn" {
   description = "ECS execution role ARN."
